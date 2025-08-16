@@ -1,0 +1,73 @@
+<% if (transactions && transactions.length> 0) { %>
+    <% transactions.forEach(function(item, index) { %>
+        <tr class="lg:table-row hover:<%= item.type==='income' ? 'bg-green-50' : 'bg-pink-50' %> h-10 border-b">
+            <td class="border-r text-center">
+                <input type="checkbox" value="<%= item.id %>"
+                    class="checkbox-item checkbox checkbox-sm bg-gray-200 shadow-sm p-1" autocomplete="off">
+            </td>
+            <td class="border-r text-center">
+                <div
+                    class="badge px-1.5 <%= item.type==='income' ? 'badge-soft badge-accent' : 'badge-soft badge-secondary'%>">
+                    <%= item.type==='income' ? '수입' : '지출' %>
+                </div>
+            </td>
+            <td class="border-r text-center">
+                <div
+                    class="badge px-1.5 <%= item.type==='income' ? 'badge-soft badge-accent' : 'badge-soft badge-secondary'%>">
+                    <%= item.cName %>
+                </div>
+            </td>
+            <td class="border-r text-center">
+                <%= new Date(item.regDate).toISOString().slice(0, 10) %>
+            </td>
+            <td class="hidden md:block ">
+                <p class="border-r h-10 leading-10 md:max-w-[200px] lg:max-w-[400px] xl:max-w-[592px] truncate px-2">
+                    <%- item.memo || '-' %>
+                </p>
+            </td>
+            <td class="border-r text-right px-2">
+                <%= Number(item.amount).toLocaleString() %>원
+            </td>
+            <td id="transaction-list-modal" class="">
+                <!-- 모달 보이기 -->
+                <div class="btn btn-ghost rounded-none w-full">
+                    <button class="show-detail-btn w-full" data-id="<%= index %>"
+                        data-item='<%= JSON.stringify(item) %>'>
+                        상세보기
+                    </button>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <div class="btn"><button id="transaction-edit-btn" data-id="<%= item.id %>">수정</button></div>
+                    <div class="btn"><button id="transaction-delete-btn" data-id="<%= item.id %>">삭제</button></div>
+                </div>
+            </td>
+        </tr>
+
+        <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="8" class="text-center py-3">거래 내역이 없습니다.</td>
+                </tr>
+                <% } %>
+
+                    <!-- 모달 창 -->
+                    <dialog id="transaction-modal" class="modal">
+                        <div class="modal-box p-6">
+                            <form method="dialog">
+                                <div class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                                    <button class="w-full h-full rounded-full">✕</button>
+                                </div>
+                                <div class="btn btn-sm btn-circle btn-ghost absolute right-8 top-2">
+                                    <!-- 수정버튼 활성화 버튼 -->
+                                    <button id="edit-active-btn" type="button" class="w-full h-full rounded-full">
+                                        <i class="fa-solid fa-pen-to-square"></i>
+                                    </button>
+                                </div>
+                            </form>
+                            <div id="modal-content">
+                                <!-- 이 부분 추가 -->
+                            </div>
+                        </div>
+                    </dialog>

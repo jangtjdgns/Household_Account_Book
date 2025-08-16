@@ -1,0 +1,38 @@
+<div class="join flex justify-center" role="navigation">
+    <!-- &lt; = <  &gt; = >  &laquo; = <<  &raquo; = >> -->
+
+    <!-- 처음 버튼 -->
+    <div class="join-item btn w-8 h-8">
+        <button type="button" id="first-page" class="w-full h-full" data-page="1">&laquo;
+        </button>
+    </div>
+
+    <!-- 이전 버튼 -->
+    <div class="join-item btn w-8 h-8">
+        <button type="button" id="prev-page" class="w-full h-full"
+            data-page="<%= fromPage > 1 ? fromPage - 1 : 1 %>">&lt;
+        </button>
+    </div>
+
+    <!-- 페이지 번호 -->
+    <% for(let page=fromPage; page <=endPage; page++) { %>
+        <div class="join-item btn w-8 h-8 <%= page === currentPage ? 'btn-active' : '' %>">
+            <button type="button" class="w-full h-full" data-page="<%= page %>">
+                <%= page %>
+            </button>
+        </div>
+        <% } %>
+
+            <!-- 다음 버튼 -->
+            <div class="join-item btn w-8 h-8">
+                <button type="button" id="next-page" class="w-full h-full"
+                    data-page="<%= endPage < totalPageCount ? endPage + 1 : totalPageCount %>">&gt;
+                </button>
+            </div>
+
+            <!-- 마지막 버튼 -->
+            <div class="join-item btn w-8 h-8">
+                <button type="button" id="last-page" class="w-full h-full" data-page="<%= totalPageCount %>">&raquo;
+                </button>
+            </div>
+</div>

@@ -1,0 +1,38 @@
+# 거래 테이블
+CREATE TABLE transactions (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT '거래 번호',
+    regDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '거래 추가일',
+    updateDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '거래 수정일',
+    TYPE VARCHAR(10) NOT NULL COMMENT '수입 또는 지출',
+    category VARCHAR(50) NOT NULL COMMENT '카테고리',
+    amount INT NOT NULL COMMENT '금액',
+    memo VARCHAR(200) COMMENT '메모'
+);
+
+# 카테고리 테이블
+CREATE TABLE categories (
+    id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT COMMENT '카테고리 번호',
+    CODE VARCHAR(50) NOT NULL UNIQUE COMMENT '카테고리 식별자 (예: salary, food 등)',
+    regDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일시',
+    updateDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일시',
+    `name` VARCHAR(100) NOT NULL COMMENT '사용자에게 표시되는 이름',
+    `type` VARCHAR(20) NOT NULL COMMENT 'income 또는 expense',
+    isActive BOOLEAN NOT NULL DEFAULT TRUE COMMENT '활성 여부'
+);
+
+# 초기 카테고리
+INSERT INTO categories (`code`, `name`, `type`) VALUES
+('salary', '급여', 'income'),
+('bonus', '보너스', 'income'),
+('interest', '이자/배당금', 'income'),
+('gift', '선물/용돈', 'income'),
+('other-income', '기타 수입', 'income'),
+('food', '식비', 'expense'),
+('transportation', '교통비', 'expense'),
+('housing', '주거비', 'expense'),
+('utilities', '공과금', 'expense'),
+('shopping', '쇼핑/의류', 'expense'),
+('entertainment', '여가/오락', 'expense'),
+('healthcare', '의료/건강', 'expense'),
+('education', '교육', 'expense'),
+('other-expense', '기타 지출', 'expense');

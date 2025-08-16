@@ -1,0 +1,28 @@
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <title>
+    <%= headTitle || '스마트 가계부' %>
+  </title>
+  <!-- tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- daisyUi -->
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/7a79c7be2a.js" crossorigin="anonymous"></script>
+
+  <!-- custom_css -->
+  <link rel="stylesheet" href="/css/common.css" />
+  <% if (typeof pageCSS !=='undefined' ) { %>
+    <% if (Array.isArray(pageCSS)) { %>
+      <% pageCSS.forEach(function(href) { %>
+        <!-- <link rel="stylesheet" href="<%= href %>"> -->
+        <% }); %>
+          <% } else { %>
+            <!-- <link rel="stylesheet" href="<%= pageCSS %>"> -->
+            <% } %>
+              <% } %>
+</head>

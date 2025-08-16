@@ -1,0 +1,223 @@
+<section class="">
+    <div class="summary flex justify-between mb-7 gap-0 lg:gap-2 flex-col lg:flex-row">
+        <div class="summary-card flex-1 p-5 rounded-xl text-center text-white shadow-md my-2.5 ml-0 bg-accent">
+            <div class="summary-title text-base mb-2.5 font-medium">이번 달 수입</div>
+            <div id="total-income" class="summary-amount text-2xl font-bold">0
+            </div>
+        </div>
+        <div class="summary-card flex-1 p-5 rounded-xl text-center text-white shadow-md my-2.5 bg-secondary">
+            <div class="summary-title text-base mb-2.5 font-medium">이번 달 지출</div>
+            <div id="total-expense" class="summary-amount text-2xl font-bold">0
+            </div>
+        </div>
+        <div class="summary-card flex-1 p-5 rounded-xl text-center text-white shadow-md my-2.5 mr-0 bg-primary">
+            <div class="summary-title text-base mb-2.5 font-medium bg-">이번 달 잔액</div>
+            <div id="total-balance" class="summary-amount text-2xl font-bold">0
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-md p-6 mb-7 transition duration-[0.3s] hover:shadow-xl">
+        <div class="text-xl font-bold mb-5 text-primary flex justify-between items-center">새 거래 추가하기</div>
+
+        <form id="transaction-form">
+            <div class="px-6">
+                <!-- 추가-거래구분 -->
+                <div id="transaction-type" class="join flex mb-10 border border-gray-200 rounded-xl overflow-hidden">
+                    <input type="radio" name="add-type"
+                        class="btn btn-xl bg-green-50 checked:bg-[oklch(77%_.152_181.912)] text-black checked:text-white flex-1 text-center p-3 mb-0 font-semibold transition duartion-[0.3s]"
+                        aria-label="수입" value="income" checked />
+                    <input type="radio" name="add-type"
+                        class="btn btn-xl bg-pink-50 checked:bg-[oklch(65%_.241_354.308)] text-black checked:text-white flex-1 text-center p-3 mb-0 font-semibold transition duartion-[0.3s]"
+                        aria-label="지출" value="expense" />
+                </div>
+
+                <div class="flex flex-col lg:flex-row gap-10">
+                    <div class="flex-1 flex flex-col gap-3 justify-between mb-5">
+                        <!-- 추가-금액 -->
+                        <div class="flex-1 form-group">
+                            <div class="mb-2 mx-2 font-semibold">금액</div>
+                            <input type="number" id="add-amount"
+                                class="input input-lg w-full border focus:outline-none focus:border-blue-400 transition duration-[0.1s] validator px-2"
+                                required placeholder="금액을 입력하세요." min="0" max="1000000000" step="1" />
+                        </div>
+                        <!-- 추가-카테고리 -->
+                        <div class="flex-1 form-group">
+                            <div class="mb-2 mx-2 font-semibold">카테고리</div>
+                            <select id="add-category"
+                                class="select select-lg w-full border focus:outline-none focus:border-blue-400 transition duration-[0.1s] px-2"
+                                required>
+                                <option value="" disabled selected>카테고리 선택</option>
+                                <optgroup label="수입" id="income-categories">
+                                    <option value="salary">급여</option>
+                                    <option value="bonus">보너스</option>
+                                    <option value="interest">이자/배당금</option>
+                                    <option value="gift">선물/용돈</option>
+                                    <option value="other-income">기타 수입</option>
+                                </optgroup>
+                                <optgroup label="지출" id="expense-categories" class="hidden">
+                                    <option value="food">식비</option>
+                                    <option value="transportation">교통비</option>
+                                    <option value="housing">주거비</option>
+                                    <option value="utilities">공과금</option>
+                                    <option value="shopping">쇼핑/의류</option>
+                                    <option value="entertainment">여가/오락</option>
+                                    <option value="healthcare">의료/건강</option>
+                                    <option value="education">교육</option>
+                                    <option value="other-expense">기타 지출</option>
+                                </optgroup>
+                            </select>
+                        </div>
+
+                        <!-- 추가-날짜 -->
+                        <div class="flex-1 form-group">
+                            <div class="mb-2 mx-2 font-semibold">날짜</div>
+                            <input type="date" id="add-date"
+                                class="input input-lg w-full border focus:outline-none focus:border-blue-400 transition duration-[0.1s] px-2"
+                                value="<%= today %>" required>
+                        </div>
+                    </div>
+
+                    <div class="flex-1 flex">
+                        <!-- 추가-메모 -->
+                        <div class="flex-1 form-group">
+                            <div class="flex justify-between">
+                                <div class="mb-2 font-semibold">메모</div>
+                                <div class="inline self-end font-bold">
+                                    <span id="memo-length">0</span>/<span id="memo-limit"></span>
+                                </div>
+                            </div>
+                            <textarea id="add-memo"
+                                class="textarea border w-full focus:outline-none focus:border-blue-400 p-2 resize-none"
+                                rows="9" placeholder="메모를 입력하세요 (선택사항) / 200글자 이내" maxlength="200"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-2 justify-end mt-4 lg:mt-0">
+                    <!-- 초기화 버튼 -->
+                    <div class="w-20 btn btn-soft border">
+                        <button type="reset" class="w-full h-full">초기화</button>
+                    </div>
+                    <!-- 저장 버튼 -->
+                    <div class="w-20 btn btn-soft btn-accent border">
+                        <button type="submit" id="add-btn" class="w-full h-full">저장하기</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 거래 내역 필터 추가 -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-7 transition duration-[0.3s] hover:shadow-xl">
+        <div class="text-xl font-bold mb-5 text-primary flex justify-between items-center">
+            <span>거래 내역 조회</span>
+        </div>
+        <!-- 필터 -->
+        <div id="filter-section" class="px-6">
+            <!-- 거래 구분 -->
+            <div id="filter-type-radio" class="join flex mb-10 border border-gray-200 rounded-xl overflow-hidden">
+                <input type="radio" id="filter-all"
+                    class="btn btn-xl bg-blue-50 checked:bg-[oklch(45%_.24_277.023)] text-black checked:text-white flex-1 text-center p-3 mb-0 font-semibold transition duartion-[0.3s]"
+                    name="filter-type" aria-label="전체" value="all" checked>
+                <input type="radio" id="filter-income"
+                    class="btn btn-xl bg-green-50 checked:bg-[oklch(77%_.152_181.912)] text-black checked:text-white flex-1 text-center p-3 mb-0 font-semibold transition duartion-[0.3s]"
+                    name="filter-type" aria-label="수입" value="income">
+                <input type="radio" id="filter-expense"
+                    class="btn btn-xl bg-pink-50 checked:bg-[oklch(65%_.241_354.308)] text-black checked:text-white flex-1 text-center p-3 mb-0 font-semibold transition duartion-[0.3s]"
+                    name="filter-type" aria-label="지출" value="expense">
+            </div>
+
+            <div class="flex flex-col lg:flex-row gap-2 lg:gap-10">
+                <!-- 조회 시작일자 -->
+                <div class="flex-3">
+                    <div class="mb-2 mx-2 font-semibold">조회 시작일</div>
+                    <input type="date" id="start-date"
+                        class="input input-lg w-full border focus:outline-none focus:border-blue-400 transition duration-[0.1s] px-2"
+                        value="<%= startDate %>" autocomplete="off">
+                </div>
+                <!-- 조회 종료일자 -->
+                <div class="flex-3">
+                    <div class="mb-2 mx-2 font-semibold">조회 종료일</div>
+                    <input type="date" id="end-date"
+                        class="input input-lg w-full border focus:outline-none focus:border-blue-400 transition duration-[0.1s] px-2"
+                        value="<%= endDate %>" autocomplete="off">
+                </div>
+
+                <!-- 거래 표시 개수 -->
+                <div class="flex-1">
+                    <div class="mb-2 mx-2 font-semibold">표시개수</div>
+                    <select id="limit"
+                        class="select w-full border focus:outline-none focus:border-blue-400 transition duration-[0.1s] px-2"
+                        autocomplete="off">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25" selected>25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex gap-2 justify-end mt-4">
+                <!-- 필터 초기화 버튼 -->
+                <div class="w-20 btn btn-soft border">
+                    <button type="button" id="reset-filters" class="w-full h-full">초기화</button>
+                </div>
+                <!-- 조회 버튼 -->
+                <div class="w-20 btn btn-soft btn-accent border">
+                    <button type="button" id="apply-filters" class="w-full h-full">조회</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 거래 내역 목록 -->
+    <div id="transaction-list"
+        class="bg-white rounded-xl shadow-md p-6 mb-7 transition duration-[0.3s] hover:shadow-xl">
+        <div class="text-xl font-bold mb-5 text-primary flex justify-between items-center">
+            <span>거래 내역</span>
+            <div class="flex flex-col items-end gap-2">
+                <div id="transaction-count" class="right text-sm font-normal text-gray-500 -mb-5">총 <%= count %>건</div>
+            </div>
+        </div>
+
+        <div id="transaction-container" class="overflow-x-auto">
+            <table class="table">
+                <thead>
+                    <tr class="border-b h-8 bg-gray-100 text-base shadow text-center">
+                        <th width="3%" class="border-r border-white">
+                            <input type="checkbox" id="checkbox-all" class="checkbox bg-gray-300 shadow p-1"
+                                autocomplete="off" />
+                        </th>
+                        <th width="8%" class="border-r border-white">구분</th>
+                        <th width="10%" class="border-r border-white">카테고리</th>
+                        <th width="10%" class="border-r border-white">거래일</th>
+                        <th width="42%"
+                            class="border-r border-white hidden md:table-cell md:max-w-[200px] lg:max-w-[400px] xl:max-w-[592px]">
+                            메모</th>
+                        <th width="10%" class="border-r border-white">금액</th>
+                        <th width="10%">상세보기</th>
+                        <th width="8%">관리</th>
+                    </tr>
+                </thead>
+                <tbody id="transactions-body">
+                    <%- transactionList %>
+                </tbody>
+            </table>
+            <!-- 거래내역 목록 페이지네이션 -->
+            <div id="pagination-container">
+                <%- paginationHtml %>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<script src="/js/household/household.js" type="module"></script>
+<script src="/js/ui/modal.js" type="module"></script>
