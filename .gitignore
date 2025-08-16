@@ -1,0 +1,5 @@
+# node_modules 폴더는 업로드 제외
+node_modules/
+
+# 환경 변수 파일 제외
+.env
