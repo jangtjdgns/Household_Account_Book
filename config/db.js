@@ -1,13 +1,15 @@
+// config/db.js
+require('dotenv').config({ path: '/etc/secrets/.env' }); // Render Secret File
 const mysql = require('mysql2');
-require('dotenv').config();
 
-const pool = mysql.createPool({
+const db = mysql.createPool({
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT || 3306,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
-    connectionLimit: 10
-});
+    port: process.env.DB_PORT,
+    connectionLimit: 10,
+    ssl: { rejectUnauthorized: true } // Aiven MySQL SSL 적용
+}).promise();
 
-module.exports = pool.promise();
+module.exports = db;
