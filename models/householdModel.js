@@ -1,5 +1,5 @@
 // models/householdModel.js
-const db = require('../config/db');
+const db = require('../index');
 
 // 거래내역 목록 조회 쿼리
 async function getTransactionList(startDate, endDate, type, offset, limit) {
